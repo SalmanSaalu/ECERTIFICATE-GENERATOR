@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Document</title>
+    <style>
+        body {
+          margin: 0;
+          font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        .topnav {
+          overflow: hidden;
+          background-color: rgb(246, 246, 246);
+        }
+        
+        .topnav a {
+          float: left;
+          display: block;
+          color: #080808;
+          text-align: center;
+          padding: 14px 16px;
+          text-decoration: none;
+          font-size: 17px;
+        }
+        
+        .topnav a:hover {
+          background-color: rgb(87, 85, 85);
+          color: black;
+          
+        }
+        
+        .topnav #myBtn:hover{
+          background-color: rgb(87, 85, 85);
+        }
+        /* .topnav a.active {
+          background-color: #04AA6D;
+          color: white;
+        } */
+        
+        .topnav .icon {
+          display: none;
+        }
+        
+        @media screen and (max-width: 600px) {
+          .topnav a {display: none;}
+          .topnav button{display: none;}
+          .topnav a.icon {
+            float: right;
+            display: block;
+          }
+        }
+        
+        @media screen and (max-width: 600px) {
+          .topnav.responsive {position: relative;}
+          
+          .topnav.responsive .icon {
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
+          .topnav.responsive a {
+            float: none;
+            display: block;
+            
+            text-align: left;
+          }
+          .topnav.responsive button{
+            display: block;
+          }
+          .list {margin-top:2rem;}
+        }
+
+        .list1{width:15%}
+
+        .list{width:15%}
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+
+        /* The Close Button */
+        .close,.close1 {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,.close1:hover,.close1:focus
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #myBtn,#myBtn1{
+          border: none;
+          background-color: #f6f6f6;
+          width: 17%;
+        }
+
+        .form{
+
+          margin-left: 25%;
+          width: 47%;
+          height: 31px;
+          text-align: center;
+          font-size: 18px;
+          font-family: monospace;
+          border-radius: 20px;
+        }
+
+        .sbmit{
+          margin-left: 39%;
+          width: 20%;
+          height: 40px;
+          text-align: center;
+          font-family: monospace;
+          border-radius: 20px;
+          cursor: pointer;
+          font-size: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+        
+    <div class="topnav" id="myTopnav">
+        <div style="float:left ;width:50%"><h3 style="padding-left: 7%;">E-CERTIFICATE GENERATOR</h3></div>
+        <div style="float:right;width:50%;margin-top:5px" >
+          
+          <a class="list" href="/" >Home</a>
+          <a class="list1" href="{% url 'status' %}">status</a>
+          <a class="list1" href="#about">About</a>
+          
+          <a class="list1" href="#status">{{user.username}}</a>
+          <a class="list1" href="{% url 'logout' %}">Logout</a>
+          
+
+
+          <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+          </a>
+        
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+      
+  
+      <div class="modal-content" id="datadiv">
+        <span class="close">×</span>
+        <h2><center>SIGNIN</center></h2>
+        <!-- <form action="" method="post" >
+          {% csrf_token %} -->
+          <input type="text" name="username" placeholder="username" class="form"><br><br>
+          
+          <input type="password" name="password" placeholder="password" class="form"><br><br>
+          
+          <button type="submit" class="sbmit" onclick="sbmit()">Submit</button><br><br>
+        <!-- </form> -->
+        <span id = "p1" style="color:red;margin-left: 39%;"> </span> <br><br>
+      </div>
+    
+    </div>
+
+
+
+
+
+    <div id="myModal1" class="modal">
+
+  
+      <div class="modal-content">
+        <span class="close1" >×</span>
+        <h2><center>SIGNUP</center></h2>
+        <form action="account/signup" method="post" >
+          {% csrf_token %}
+          <input type="text" name="username" placeholder="username" class="form" required><br><br>
+          <input type="email" name="email" placeholder="email" class="form" required><br><br>
+          <input type="text" name="password" placeholder="password" class="form" required id="password1"><br><br>
+          <input type="password" name="retypepassword" placeholder="retypepassword" class="form" required id="password2"><br><br>
+          <button type="submit" class="sbmit" id="sbmit">Submit</button><br><br>
+          <span id = "message" style="color:red;margin-left: 39%;"> </span> <br><br>
+        </form>
+
+      </div>
+    
+    </div>
+    <div >
+        <div ><center>
+            <h2 style="font-family: serif;">ISSUE CERTIFICATE</h2><br><br></center>
+            <div style="margin-left: 25%;">
+            <form method="post" action="" enctype="multipart/form-data">
+                {% csrf_token %}
+            <label for style="font-size: 18px;font-family: serif">Attach a excel file in <b>csv</b> format:</label><br>
+            <input type="file" name="excel" style="border: 2px solid;height: 25px;padding-top: 3px;padding-left: 7px;    width: 63%;" required><br><br>
+            <label for style="font-size: 18px;font-family: serif">Attach a template file in <b>ppt or pptx</b> format: </label><br>
+            <input type="file" name="template" style="border: 2px solid;height: 25px;padding-top: 3px;padding-left: 7px;    width: 63%;" required><br><br>
+            <button type="submit" style="    margin-left: 24%;width: 20%; border-radius: 21px; height: 45px;font-weight: 800;color: green;">NEXT</button>
+            </form>
+        </div>
+        <center>
+            {% for message in messages %}
+            <p style="font-family: serif;color:red">{{message}}</p>
+            {% endfor %}
+
+        </center>
+        </div>
+    </div>
+    
+        
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function myFunction() {
+          var x = document.getElementById("myTopnav");
+          if (x.className === "topnav") {
+            x.className += " responsive";
+          } else {
+            x.className = "topnav";
+          }
+        }
+        function sbmit(){
+          $.ajax({data:$("#datadiv").find("input").serialize(),
+        url:"{% url 'signin' %}",
+        type:"GET",
+        success:successFunc,
+        error:errorFunc
+        });
+
+        function successFunc(response){
+          a=response.password
+          if(response.password=='**successfully loggined'){
+          $(document).ajaxStop(function(){
+           window.location.reload();
+           alert('successfully loggined')
+          });
+          }
+          else{document.getElementById("p1").innerHTML=response.password}
+        }
+        function errorFunc(){
+          alert('error');
+        }
+        }
+
+
+
+
+    </script>
+    <script>
+
+      var modal = document.getElementById('myModal');
+      var modal1= document.getElementById('myModal1');
+      // Get the button that opens the modal
+      var btn = document.getElementById("myBtn");
+      var btn1 = document.getElementById("myBtn1");
+     
+      // Get the <span> element that closes the modal
+      var span = document.getElementsByClassName("close")[0];
+      var span1 = document.getElementsByClassName("close1")[0]
+      
+      // When the user clicks the button, open the modal 
+      btn.onclick = function() {
+          modal.style.display = "block";
+      }
+      
+      btn1.onclick = function() {
+          modal1.style.display = "block";
+      }
+      // When the user clicks on <span> (x), close the modal
+      span.onclick = function() {
+          modal.style.display = "none";
+      }
+
+      span1.onclick = function() {
+          modal1.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+            if (event.target == modal ) {
+                modal.style.display = "none";
+            }
+
+            else if (event.target == modal1){
+                modal1.style.display = "none";
+            }
+      }
+      
+      // When the user clicks anywhere outside of the modal, close it
+
+      </script>
+      <script>
+
+        var btn = document.getElementById("sbmit");
+        btn.onclick = function(e) {
+          var pw1 = document.getElementById("password1").value;
+          var pw2 = document.getElementById("password2").value;
+          
+          // console.log(pw1,pw2);
+          if (pw1!=pw2){
+          e.preventDefault();
+          document.getElementById("message").innerHTML = "**Password must be same";
+          return false;
+        }
+        else{return confirm('Do you really want to submit the form?');}
+      }
+        
+
+      </script>
+     
+        
+</body>
+</html>
