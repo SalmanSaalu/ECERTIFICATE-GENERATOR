@@ -1,1 +1,1 @@
-web: gunicorn ecertificate.wsgi --log-file -
+web: gunicorn ecertificate.wsgi 
