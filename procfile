@@ -1,1 +1,1 @@
-web: gunicorn ecertificate:app
+web: gunicorn ecertificate.wsgi
