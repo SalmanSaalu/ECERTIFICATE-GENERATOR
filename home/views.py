@@ -4,10 +4,10 @@ from pptx import Presentation
 import pandas as pd
 from django.views import View
 from .models import beforefetch
-import pythoncom
+
 import os
 import random
-import smtplib
+
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
