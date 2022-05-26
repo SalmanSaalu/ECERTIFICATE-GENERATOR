@@ -16,7 +16,9 @@ from email import encoders
 from home.models import statusdetails
 from django.contrib import messages
 from django.utils.crypto import get_random_string
-
+from .convter import ppt2pdf
+import requests
+from django.core.mail import send_mail, EmailMessage
 
 def first(request):
     return render(request,'index.html')
@@ -146,6 +148,7 @@ class Certificateparttwo(View):
         
         p=df.values.tolist()
         for ro in range(0,total_rows):
+            
             emailing="hello"   
         
             for jjj in range(ro,total_rows):
@@ -194,48 +197,72 @@ class Certificateparttwo(View):
             jj=-1
             working_dir = os.getcwd()
             ww=random.randint(1,1000)
+            # ww=str(ww)
             nn=str(ww)+'.pptx'
             aab=os.path.join( working_dir  + '/media/after_fetch',nn)
-            nn=str(ww)+'.pdf'
-            bba=os.path.join( working_dir  + '/media/after_fetch',nn)
+            # nn=str(ww)+'.pdf'
+            # bba=os.path.join( working_dir  + '/media/after_fetch',nn)
             prs.save(os.path.abspath(aab))
             input_file_path = os.path.abspath(aab)
-            output_file_path = os.path.abspath(bba)
-            powerpoint =Dispatch("Powerpoint.Application",pythoncom.CoInitialize())
-            powerpoint.Visible = 1
-            slides = powerpoint.Presentations.Open(input_file_path)
-            slides.SaveAs(output_file_path, 32)
-            slides.Close()      
-            fromaddr = "salmansaalu10@gmail.com"
-            toaddr = emailing
-            
+            # print(aab)
+            # output_file_path = os.path.abspath(bba)
+            # powerpoint =Dispatch("Powerpoint.Application",pythoncom.CoInitialize())
+            # powerpoint.Visible = 1
+            # slides = powerpoint.Presentations.Open(input_file_path)
+            # slides.SaveAs(output_file_path, 32)
+            # slides.Close()  
+            # a=ppt2pdf(aab,nn)
+            n=ppt2pdf(aab,nn)
+            url="https://docs.google.com/presentation/d/"+n+"/export/pdf"
+            print(url)
+            # url="https://docs.google.com/document/export?format=[pdf]&id=[ID]"
+            r = requests.get(url, allow_redirects=True)
+            open('certificate.pdf', 'wb').write(r.content)
+
+
+
+            mail=EmailMessage(
+                        "certificate",
+                        "user",
+                        'salmansaalu10@gmail.com',
+                        [emailing],
+
+                    )
+
+            mail.attach_file('certificate.pdf')
+            mail.send(fail_silently=False,)  
             if emailing=='salmanpp05@gmail.com':
                 emailing='email error'
                 g=0
             else:
                 g=1
-            print(g)
+            
             vv=statusdetails.objects.create(email=emailing,statusnamecheck=request.user.id,send=g)
             vv.save()
-            msg = MIMEMultipart()
-            msg['From'] = fromaddr
-            msg['To'] = toaddr 
-            msg['Subject'] = "Subject of the Mail"
-            body = "Body_of_the_mail"
-            msg.attach(MIMEText(body, 'plain'))
-            filename = nn
-            attachment = open(output_file_path, "rb")
-            pp = MIMEBase('application', 'octet-stream')
-            pp.set_payload((attachment).read())
-            encoders.encode_base64(pp)
-            pp.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-            msg.attach(pp)
-            s = smtplib.SMTP('smtp.gmail.com', 587)
-            s.starttls()
-            s.login(fromaddr, "yjiloplrlivfdsqg")
-            text = msg.as_string()
-            s.sendmail(fromaddr, toaddr, text)
-            s.quit()  
+            
+            
+            os.remove('certificate.pdf')
+            # fromaddr = "salmansaalu10@gmail.com"
+            # toaddr = emailing
+            #msg = MIMEMultipart()
+            # msg['From'] = fromaddr
+            # msg['To'] = toaddr 
+            # msg['Subject'] = "Subject of the Mail"
+            # body = "Body_of_the_mail"
+            # msg.attach(MIMEText(body, 'plain'))
+            # filename = nn
+            # # attachment = open(output_file_path, "rb")
+            # pp = MIMEBase('application', 'octet-stream')
+            # pp.set_payload((attachment).read())
+            # encoders.encode_base64(pp)
+            # pp.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+            # msg.attach(pp)
+            # s = smtplib.SMTP('smtp.gmail.com', 587)
+            # s.starttls()
+            # s.login(fromaddr, "yjiloplrlivfdsqg")
+            # text = msg.as_string()
+            # s.sendmail(fromaddr, toaddr, text)
+            # s.quit()  
         return redirect('/')    
 
 
