@@ -4,7 +4,6 @@ from pptx import Presentation
 import pandas as pd
 from django.views import View
 from .models import beforefetch
-from win32com.client import Dispatch
 import pythoncom
 import os
 import random
