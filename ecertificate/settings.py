@@ -82,19 +82,13 @@ WSGI_APPLICATION = 'ecertificate.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-ar=[]
-a=secrets.get('NAME')
-b=secrets.get('USER')
-c=secrets.get('PASSWORD')
-ar.append(a)
-ar.append(b)
-ar.append(c)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': ar[0] ,
-        'USER': ar[1],
-        'PASSWORD' :ar[2],
+        'NAME': 'ecertificate',
+        'USER': 'postgres',
+        'PASSWORD' :'1234',
         'HOST':'localhost',
     }
 }
@@ -153,8 +147,8 @@ django_heroku.settings(locals())
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 MAILER_EMAIL_BACKEND = EMAIL_BACKEND
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = secrets.get('EMAIL_HOST_PASSWORD')
-EMAIL_HOST_USER = secrets.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = "yjiloplrlivfdsqg"
+EMAIL_HOST_USER = "salmansaalu10@gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
