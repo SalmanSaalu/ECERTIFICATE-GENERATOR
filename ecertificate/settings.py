@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 import django_heroku
 from decouple import config
-from secrets import secrets
+from .secrets import secrets
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
